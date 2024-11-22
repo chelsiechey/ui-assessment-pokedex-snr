@@ -1,12 +1,14 @@
 import { useMemo, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useGetPokemons } from '../../hooks/useGetPokemons';
-import { PokemonListItem } from '../PokemonListItem';
+import { Link, useLocation } from 'react-router-dom';
+import { PokemonCard } from '../PokemonCard';
 
 export const PokemonList = () => {
   const classes = useStyles();
   const { pokemons, loading } = useGetPokemons();
   const [searchTerm, setSearchTerm] = useState('');
+  const location = useLocation();
 
   const filteredPokemons = useMemo(
     () =>
@@ -26,11 +28,19 @@ export const PokemonList = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       {loading && <div>Loading...</div>}
-      <div className={classes.list}>
+      <ul className={classes.list}>
         {filteredPokemons.map((pokemon) => (
-          <PokemonListItem key={pokemon.id} pokemon={pokemon} />
+          <li key={pokemon.id}>
+            <Link
+              to={`/pokemon/${pokemon.id}`}
+              state={{ background: location }}
+              className={classes.link}
+            >
+              <PokemonCard pokemon={pokemon} />
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
@@ -46,7 +56,7 @@ const useStyles = createUseStyles(
       width: '240px',
       boxSizing: 'border-box',
       fontSize: '16px',
-      marginBottom: '16px',
+      marginBottom: '40px',
       padding: '12px',
       color: 'black',
       border: '2px solid gray',
@@ -58,10 +68,16 @@ const useStyles = createUseStyles(
       },
     },
     list: {
+      listStyle: 'none',
+      margin: '0',
+      padding: '0',
       display: 'flex',
       flexDirection: 'row',
       flexWrap: 'wrap',
       gap: '24px',
+    },
+    link: {
+      textDecoration: 'none',
     },
   },
   { name: 'PokemonList' }

@@ -7,11 +7,11 @@ interface StylesProps {
   background: string;
 }
 
-interface PokemonListProps {
+interface PokemonCardProps {
   pokemon: Pokemon;
 }
 
-export const PokemonListItem = ({ pokemon }: PokemonListProps) => {
+export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   const background = useMemo(() => {
     const [firstColor, secondColor] = pokemon.types.map(
       (type) => BG_COLORS[type?.toLowerCase()]
@@ -23,7 +23,7 @@ export const PokemonListItem = ({ pokemon }: PokemonListProps) => {
     } else if (secondColor) {
       return secondColor;
     }
-    // Fallback if we do not have a custom color for the Pokemon type
+    // Fallback if no custom color for the Pokemon type
     return 'black';
   }, [pokemon.types]);
 
@@ -31,7 +31,7 @@ export const PokemonListItem = ({ pokemon }: PokemonListProps) => {
     background,
   });
   return (
-    <div className={`${classes.card}`}>
+    <div className={classes.card}>
       <h2>{`${pokemon.name} #${pokemon.number}`}</h2>
       <figure>
         <img
@@ -57,6 +57,7 @@ const useStyles = createUseStyles(
       justifyContent: 'space-between',
       boxSizing: 'border-box',
       width: '240px',
+      maxWidth: '100%',
       height: '336px',
       padding: '12px',
       gap: '8px',
@@ -69,7 +70,6 @@ const useStyles = createUseStyles(
       transition: 'all 200ms ease-in-out',
       '&:hover': {
         transform: 'scale(1.05)',
-        cursor: 'pointer',
         animation: '$borderGlow 1s infinite',
       },
     }),
@@ -95,5 +95,5 @@ const useStyles = createUseStyles(
       },
     },
   },
-  { name: 'PokemonListItem' }
+  { name: 'PokemonCard' }
 );

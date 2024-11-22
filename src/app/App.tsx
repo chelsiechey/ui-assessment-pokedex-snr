@@ -1,29 +1,36 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { LayoutProvider } from '../contexts';
-import { Nav } from '../components';
+import { Nav, PokemonModal } from '../components';
 import { ApolloProvider } from '@apollo/client';
 import { client } from './client';
 import { ListPage, Home } from '../screens';
 
 function App() {
   const classes = useStyles();
+  const location = useLocation();
+  const background = location.state && location.state.background;
   return (
     <ApolloProvider client={client}>
       <LayoutProvider>
         <div className={classes.root}>
-          <BrowserRouter>
-            <Nav />
-            <div className={classes.content}>
-              <div className={classes.scrollableArea}>
+          <Nav />
+          <div className={classes.content}>
+            <div className={classes.scrollableArea}>
+              <Routes location={background || location}>
+                <Route path="/" element={<Home />} />
+                <Route path="/pokemon" element={<ListPage />}>
+                  <Route path=":id" element={<PokemonModal />} />
+                </Route>
+              </Routes>
+              {background && (
                 <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/pokemon" element={<ListPage />} />
+                  <Route path="/pokemon/:id" element={<PokemonModal />} />
                 </Routes>
-              </div>
+              )}
             </div>
-          </BrowserRouter>
+          </div>
         </div>
       </LayoutProvider>
     </ApolloProvider>

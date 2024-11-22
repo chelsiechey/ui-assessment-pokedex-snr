@@ -29,8 +29,10 @@ export const GET_POKEMON = gql`
   }
 `;
 
-export const useGetPokemon = () => {
-  const { data, ...queryRes } = useQuery(GET_POKEMON);
+export const useGetPokemon = (id?: string) => {
+  const { data, ...queryRes } = useQuery(GET_POKEMON, {
+    variables: { id },
+  });
   const pokemon: Pokemon = useMemo(() => data?.pokemon || null, [data]);
 
   return {
