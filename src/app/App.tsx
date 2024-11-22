@@ -20,9 +20,16 @@ function App() {
             <div className={classes.scrollableArea}>
               <Routes location={background || location}>
                 <Route path="/" element={<Home />} />
-                <Route path="/pokemon" element={<ListPage />}>
-                  <Route path=":id" element={<PokemonModal />} />
-                </Route>
+                <Route path="/pokemon" element={<ListPage />} />
+                <Route
+                  path="/pokemon/:id"
+                  element={
+                    <>
+                      <ListPage />
+                      <PokemonModal />
+                    </>
+                  }
+                />
               </Routes>
               {background && (
                 <Routes>

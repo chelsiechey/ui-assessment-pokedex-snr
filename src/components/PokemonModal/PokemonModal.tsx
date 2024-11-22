@@ -10,7 +10,7 @@ export const PokemonModal = () => {
   const classes = useStyles();
 
   const handleClose = () => {
-    navigate(-1);
+    navigate('/pokemon');
   };
 
   if (loading) return <p>Loading...</p>;
