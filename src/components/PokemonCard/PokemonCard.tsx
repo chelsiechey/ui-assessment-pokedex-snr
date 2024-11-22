@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Pokemon } from '../../hooks/useGetPokemons';
 import { createUseStyles } from 'react-jss';
-import { BG_COLORS } from '../../constants/colors';
+import { getPokemonBgColor } from '../../utils/colors';
 
 interface StylesProps {
   background: string;
@@ -12,24 +12,12 @@ interface PokemonCardProps {
 }
 
 export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
-  const background = useMemo(() => {
-    const [firstColor, secondColor] = pokemon.types.map(
-      (type) => BG_COLORS[type?.toLowerCase()]
-    );
-    if (firstColor && secondColor) {
-      return `linear-gradient(45deg, ${firstColor} 50%, ${secondColor} 50%)`;
-    } else if (firstColor) {
-      return firstColor;
-    } else if (secondColor) {
-      return secondColor;
-    }
-    // Fallback if no custom color for the Pokemon type
-    return 'black';
-  }, [pokemon.types]);
+  const background = useMemo(() => getPokemonBgColor(pokemon), [pokemon]);
 
   const classes = useStyles({
     background,
   });
+
   return (
     <div className={classes.card}>
       <h2>{`${pokemon.name} #${pokemon.number}`}</h2>
@@ -61,7 +49,7 @@ const useStyles = createUseStyles(
       height: '336px',
       padding: '12px',
       gap: '8px',
-      border: '10px solid orange',
+      border: '10px solid white',
       borderRadius: '4px',
       background: props.background,
       '& h2, & p': {
@@ -77,7 +65,8 @@ const useStyles = createUseStyles(
       objectFit: 'contain',
       maxWidth: '150px',
       maxHeight: '150px',
-      border: '6px solid #FFD23F',
+      padding: '8px',
+      backgroundColor: 'white',
       borderRadius: '4px',
     },
     bold: {

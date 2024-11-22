@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetPokemon } from '../../hooks/useGetPokemon';
 import { createUseStyles } from 'react-jss';
-import { PokemonCard } from '../PokemonCard';
+import { PokemonStatsCard } from '../PokemonStatsCard/PokemonStatsCard';
 
 export const PokemonModal = () => {
   const { id } = useParams();
@@ -18,7 +18,7 @@ export const PokemonModal = () => {
   return (
     <div className={classes.modal}>
       <div className={classes.container}>
-        <PokemonCard pokemon={pokemon} />
+        <PokemonStatsCard pokemon={pokemon} />
       </div>
       <button className={classes.button} onClick={handleClose}>
         Close
@@ -50,6 +50,7 @@ const useStyles = createUseStyles(
       top: '20px',
       right: '20px',
       color: 'black',
+      cursor: 'pointer',
     },
   },
   { name: 'PokemonModal' }
